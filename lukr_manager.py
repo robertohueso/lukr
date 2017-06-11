@@ -1,5 +1,6 @@
 import os
 import subprocess
+import getpass
 
 class LukrManager():
     def __init__(self):
@@ -54,8 +55,15 @@ class LukrManager():
                          'mount',
                          '/dev/mapper/' + file_name,
                          mount_dir]
+        chown_command = ['sudo',
+                         'chown',
+                         '-R',
+                         getpass.getuser(),
+                         mount_dir]
         subprocess.run(open_command)
         subprocess.run(mount_command)
+        subprocess.run(chown_command)
+        
 
     def close(self, path, mount_dir):
         file_name = path.split('/')[-1]
