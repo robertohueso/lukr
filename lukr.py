@@ -4,5 +4,5 @@ import lukr_manager
 import fire
 
 if __name__ == '__main__':
-    manager = LukrManager()
+    manager = lukr_manager.LukrManager()
     fire.Fire(manager)
