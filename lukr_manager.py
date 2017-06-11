@@ -42,3 +42,29 @@ class LukrManager():
                              'luksClose',
                              file_name]
             subprocess.run(close_command)
+
+    def open(self, path, mount_dir):
+        file_name = path.split('/')[-1]
+        open_command = ['sudo',
+                        'cryptsetup',
+                        'luksOpen',
+                        path,
+                        '/dev/mapper/' + file_name]
+        mount_command = ['sudo',
+                         'mount',
+                         '/dev/mapper/' + file_name,
+                         mount_dir]
+        subprocess.run(open_command)
+        subprocess.run(mount_command)
+
+    def close(self, path, mount_dir):
+        file_name = path.split('/')[-1]
+        close_command = ['sudo',
+                        'cryptsetup',
+                        'luksClose',
+                         file_name]
+        umount_command = ['sudo',
+                         'umount',
+                         mount_dir]
+        subprocess.run(umount_command)
+        subprocess.run(close_command)
