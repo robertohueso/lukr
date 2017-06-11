@@ -49,7 +49,7 @@ class LukrManager():
                         'cryptsetup',
                         'luksOpen',
                         path,
-                        '/dev/mapper/' + file_name]
+                        file_name]
         mount_command = ['sudo',
                          'mount',
                          '/dev/mapper/' + file_name,
