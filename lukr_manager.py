@@ -3,10 +3,22 @@ import subprocess
 import getpass
 
 class LukrManager():
+    """Encrypted virtual device manager
+    """
+    
     def __init__(self):
         pass
 
     def create(self, path, size, random = False):
+        """Create encrypted virtual device
+        
+        Keyword arguments:
+        path -- Path to the new virtual device.
+        size -- Size in MBytes of the new virtual device.
+        random -- Use of random data generator to overwrite
+        old data.(Default False)
+        """
+        
         #Commands definition
         file_name = path.split('/')[-1]
         partition_command = ['cryptsetup',
@@ -49,6 +61,13 @@ class LukrManager():
         subprocess.run(close_command)
 
     def open(self, path, mount_dir):
+        """Open encrypted virtual device
+        
+        Keyword arguments:
+        path -- Path to the virtual device file.
+        mount_dir -- Directory where you want it to mount.
+        """
+        
         #Commands definition
         file_name = path.split('/')[-1]
         open_command = ['sudo',
@@ -77,6 +96,13 @@ class LukrManager():
         
 
     def close(self, path, mount_dir):
+        """Close an open encrypted virtual device
+        
+        Keyword arguments:
+        path -- Path to the virtual device file.
+        mount_dir -- Directory where it is mounted.
+        """
+        
         #Commands definition
         file_name = path.split('/')[-1]
         close_command = ['sudo',
