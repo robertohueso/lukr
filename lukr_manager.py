@@ -77,6 +77,7 @@ class LukrManager():
         
 
     def close(self, path, mount_dir):
+        #Commands definition
         file_name = path.split('/')[-1]
         close_command = ['sudo',
                         'cryptsetup',
@@ -85,5 +86,11 @@ class LukrManager():
         umount_command = ['sudo',
                          'umount',
                          mount_dir]
+        #Error control
+        if not os.path.exists(path):
+            raise IOError('Path doesn\'t exist!')
+        if not os.path.exists(mount_dir):
+            raise IOError('Mount dir doesn\'t exist!')
+        #Execute
         subprocess.run(umount_command)
         subprocess.run(close_command)
