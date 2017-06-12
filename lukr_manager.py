@@ -11,7 +11,7 @@ class LukrManager():
         if not os.path.exists(path):
             if random:
                 allocator_command = ['dd',
-                                     'if=/dev/random',
+                                     'if=/dev/urandom',
                                      'of='+path,
                                      'bs=1M',
                                      'count='+str(size)]
