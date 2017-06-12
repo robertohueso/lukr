@@ -4,6 +4,7 @@ A simple LUKS encrypted virtual devices manager.
 ## Dependencies
 * [cryptsetup](https://gitlab.com/cryptsetup/cryptsetup)
 * [python-fire](https://github.com/google/python-fire)
+* Python 3
 
 ## Quick guide
 Create a new virtual device
