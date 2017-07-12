@@ -1,3 +1,4 @@
+import lukr_manager
 import gi
 gi.require_version('Gtk', '3.0')
 
@@ -7,6 +8,7 @@ import glade
 class MainWindow():
     
     def __init__(self):
+        self.lukr = lukr_manager.LukrManager()
         self.builder = Gtk.Builder()
         self.builder.add_from_file(glade.GUI_MAIN)
         self.open_box = OpenBox(self)
@@ -39,11 +41,20 @@ class MainWindow():
 class OpenBox():
 
     def __init__(self, parent):
-        self.builder = parent.builder
+        self.parent = parent
+        self.lukr = self.parent.lukr
+        self.builder = self.parent.builder
         self.builder.add_from_file(glade.GUI_OPEN)
+        
+        name = 'open-encrypted-file-button'
+        self.encrypted_file_button = self.builder.get_object(name)
+        name = 'open-mount-point-button'
+        self.mount_point_button = self.builder.get_object(name)
+        
         #Connect signals
         args = 'clicked', self.handle_open_device
         self.builder.get_object('open-device-button').connect(*args)
 
     def handle_open_device(self, widget):
-        print("Placeholder")
+        self.lukr.open(self.encrypted_file_button.get_filename(),
+                       self.mount_point_button.get_filename())
