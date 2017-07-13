@@ -68,6 +68,7 @@
           <object class="GtkFileChooserButton" id="open-mount-point-button">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="action">select-folder</property>
             <property name="title" translatable="yes"/>
           </object>
           <packing>

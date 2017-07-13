@@ -12,7 +12,7 @@ class MainWindow():
         self.builder = Gtk.Builder()
         self.builder.add_from_file(glade.GUI_MAIN)
         self.open_box = OpenBox(self)
-        self.builder.add_from_file(glade.GUI_CLOSE)
+        self.close_box = CloseBox(self)
         self.builder.add_from_file(glade.GUI_CREATE)
         #Tabs labels
         self.open_label = Gtk.Label('Open')
@@ -39,7 +39,7 @@ class MainWindow():
         Gtk.main()
 
 class OpenBox():
-
+    
     def __init__(self, parent):
         self.parent = parent
         self.lukr = self.parent.lukr
@@ -56,5 +56,39 @@ class OpenBox():
         self.builder.get_object('open-device-button').connect(*args)
 
     def handle_open_device(self, widget):
-        self.lukr.open(self.encrypted_file_button.get_filename(),
-                       self.mount_point_button.get_filename())
+        device = [self.encrypted_file_button.get_filename(),
+                  self.mount_point_button.get_filename()]
+        self.lukr.open(*device)
+        CloseBox.opened_list.append(device)
+
+class CloseBox():
+    
+    opened_list = Gtk.ListStore(str, str)
+    
+    def __init__(self, parent):
+        self.parent = parent
+        self.lukr = self.parent.lukr
+        self.builder = self.parent.builder
+        self.builder.add_from_file(glade.GUI_CLOSE)
+        
+        name = 'opened-tree-view'
+        self.opened_tw = self.builder.get_object(name)
+        name = 'opened-tree-view-selection'
+        self.opened_tw_selection = self.builder.get_object(name)
+        
+        #Connect signals
+        args = 'clicked', self.handle_close_device
+        self.builder.get_object('close-device-button').connect(*args)
+        #Set TreeView
+        self.opened_tw.set_model(CloseBox.opened_list)
+        renderer = Gtk.CellRendererText()
+        device_column = Gtk.TreeViewColumn('Encrypted device', renderer, text=0)
+        mount_column = Gtk.TreeViewColumn('Mount point', renderer, text=0)
+        self.opened_tw.append_column(device_column)
+        self.opened_tw.append_column(mount_column)
+
+    def handle_close_device(self, widget):
+        model, m_iter = self.opened_tw_selection.get_selected()
+        selection = model[m_iter]
+        self.lukr.close(selection[0], selection[1])
+        CloseBox.opened_list.remove(m_iter)
