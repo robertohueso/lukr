@@ -64,7 +64,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEntry">
+          <object class="GtkEntry" id="size-entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="input_purpose">number</property>
@@ -99,7 +99,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkSwitch">
+          <object class="GtkSwitch" id="random-switch">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
           </object>
@@ -117,7 +117,7 @@
       </packing>
     </child>
     <child>
-      <object class="GtkButton">
+      <object class="GtkButton" id="create-button">
         <property name="label" translatable="yes">Create</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>

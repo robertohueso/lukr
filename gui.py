@@ -13,7 +13,7 @@ class MainWindow():
         self.builder.add_from_file(glade.GUI_MAIN)
         self.open_box = OpenBox(self)
         self.close_box = CloseBox(self)
-        self.builder.add_from_file(glade.GUI_CREATE)
+        self.create_box = CreateBox(self)
         #Tabs labels
         self.open_label = Gtk.Label('Open')
         self.close_label = Gtk.Label('Close')
@@ -92,3 +92,45 @@ class CloseBox():
         selection = model[m_iter]
         self.lukr.close(selection[0], selection[1])
         CloseBox.opened_list.remove(m_iter)
+
+class CreateBox():
+    
+    def __init__(self, parent):
+        self.parent = parent
+        self.lukr = self.parent.lukr
+        self.builder = self.parent.builder
+        self.builder.add_from_file(glade.GUI_CREATE)
+        
+        name = 'file-chooser-button'
+        self.file_chooser_btn = self.builder.get_object(name)
+        name = 'size-entry'
+        self.size_entry = self.builder.get_object(name)
+        name = 'random-switch'
+        self.random_switch = self.builder.get_object(name)
+        name = 'create-button'
+        self.create_btn = self.builder.get_object(name)
+        
+        #Connect signals
+        args = 'clicked', self.handle_save_file
+        self.file_chooser_btn.connect(*args)
+        args = 'clicked', self.handle_create_device
+        self.create_btn.connect(*args)
+
+    def handle_save_file(self, widget):
+        dialog = Gtk.FileChooserDialog("Save your device",
+                                       None,
+                                       Gtk.FileChooserAction.SAVE,
+                                       (Gtk.STOCK_CANCEL,
+                                        Gtk.ResponseType.CANCEL,
+                                        'Save',
+                                        Gtk.ResponseType.OK))
+        response = dialog.run()
+        if response == Gtk.ResponseType.OK:
+            self.new_file = dialog.get_filename()
+        dialog.destroy()
+
+    def handle_create_device(self, widget):
+        new_file = self.new_file
+        size = self.size_entry.get_text()
+        random = self.random_switch.get_active()
+        self.lukr.create(new_file, size, random)
