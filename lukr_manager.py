@@ -66,7 +66,7 @@ class LukrManager():
         subprocess.run(format_command)            
         subprocess.run(close_command)
 
-    def open(self, path, mount_dir):
+    def open(self, path, mount_dir, password):
         """Open encrypted virtual device
         
         Keyword arguments:
@@ -75,6 +75,7 @@ class LukrManager():
         """
         
         #Commands definition
+        password = str(password)
         file_name = path.split('/')[-1]
         open_command = ['sudo',
                         'cryptsetup',
@@ -96,7 +97,9 @@ class LukrManager():
         if not os.path.exists(mount_dir):
             raise IOError('Mount dir doesn\'t exist!')
         #Execute
-        subprocess.run(open_command)
+        cmd = Popen(open_command, stdin=PIPE, universal_newlines=True)
+        cmd.communicate(password + '\n')
+        cmd.wait()
         subprocess.run(mount_command)
         subprocess.run(chown_command)
         
