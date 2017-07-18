@@ -10,7 +10,9 @@
   <object class="GtkBox" id="gui_create">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="margin_top">5</property>
     <property name="orientation">vertical</property>
+    <property name="spacing">5</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
@@ -104,6 +106,7 @@
             <property name="can_focus">True</property>
             <property name="visibility">False</property>
             <property name="invisible_char">●</property>
+            <property name="secondary_icon_stock">gtk-dialog-authentication</property>
             <property name="input_purpose">password</property>
           </object>
           <packing>

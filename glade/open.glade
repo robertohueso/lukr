@@ -106,6 +106,7 @@
             <property name="can_focus">True</property>
             <property name="visibility">False</property>
             <property name="invisible_char">●</property>
+            <property name="secondary_icon_stock">gtk-dialog-authentication</property>
             <property name="input_purpose">password</property>
           </object>
           <packing>
