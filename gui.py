@@ -109,6 +109,8 @@ class CreateBox():
         self.random_switch = self.builder.get_object(name)
         name = 'create-button'
         self.create_btn = self.builder.get_object(name)
+        name = 'password-create-entry'
+        self.password_entry = self.builder.get_object(name)
         
         #Connect signals
         args = 'clicked', self.handle_save_file
@@ -132,5 +134,6 @@ class CreateBox():
     def handle_create_device(self, widget):
         new_file = self.new_file
         size = self.size_entry.get_text()
+        password = self.password_entry.get_text()
         random = self.random_switch.get_active()
-        self.lukr.create(new_file, size, random)
+        self.lukr.create(new_file, size, password, random)
