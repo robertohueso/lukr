@@ -1,5 +1,6 @@
 import os
 import subprocess
+from subprocess import Popen, PIPE
 import getpass
 
 class LukrManager():
@@ -9,7 +10,7 @@ class LukrManager():
     def __init__(self):
         pass
 
-    def create(self, path, size, random = False):
+    def create(self, path, size, password, random = False):
         """Create encrypted virtual device
         
         Keyword arguments:
@@ -20,6 +21,7 @@ class LukrManager():
         """
         
         #Commands definition
+        password = str(password)
         file_name = path.split('/')[-1]
         partition_command = ['cryptsetup',
                              '-y',
@@ -54,9 +56,13 @@ class LukrManager():
         if os.path.exists(path):
             raise IOError('File already exists!')
         #Execute
-        subprocess.run(allocator_command)            
-        subprocess.run(partition_command)            
-        subprocess.run(open_command)            
+        subprocess.run(allocator_command)
+        cmd = Popen(partition_command, stdin=PIPE, universal_newlines=True)
+        cmd.communicate(password + '\n')
+        cmd.wait()
+        cmd = Popen(open_command, stdin=PIPE, universal_newlines=True)
+        cmd.communicate(password + '\n')
+        cmd.wait()
         subprocess.run(format_command)            
         subprocess.run(close_command)
 
