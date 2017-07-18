@@ -50,6 +50,8 @@ class OpenBox():
         self.encrypted_file_button = self.builder.get_object(name)
         name = 'open-mount-point-button'
         self.mount_point_button = self.builder.get_object(name)
+        name = 'password-open-entry'
+        self.password_entry = self.builder.get_object(name)
         
         #Connect signals
         args = 'clicked', self.handle_open_device
@@ -57,9 +59,10 @@ class OpenBox():
 
     def handle_open_device(self, widget):
         device = [self.encrypted_file_button.get_filename(),
-                  self.mount_point_button.get_filename()]
+                  self.mount_point_button.get_filename(),
+                  self.password_entry.get_text()]
         self.lukr.open(*device)
-        CloseBox.opened_list.append(device)
+        CloseBox.opened_list.append([device[0], device[1]])
 
 class CloseBox():
     
