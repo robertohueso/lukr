@@ -2,6 +2,7 @@ import os
 import subprocess
 from subprocess import Popen, PIPE
 import getpass
+import exceptions
 
 class LukrManager():
     """Encrypted virtual device manager
@@ -100,6 +101,8 @@ class LukrManager():
         cmd = Popen(open_command, stdin=PIPE, universal_newlines=True)
         cmd.communicate(password + '\n')
         cmd.wait()
+        if cmd.returncode == 2:
+            raise exceptions.WrongPassword
         subprocess.run(mount_command)
         subprocess.run(chown_command)
         
