@@ -1,4 +1,5 @@
 import lukr_manager
+import exceptions
 import gi
 gi.require_version('Gtk', '3.0')
 
@@ -61,8 +62,17 @@ class OpenBox():
         device = [self.encrypted_file_button.get_filename(),
                   self.mount_point_button.get_filename(),
                   self.password_entry.get_text()]
-        self.lukr.open(*device)
-        CloseBox.opened_list.append([device[0], device[1]])
+        try:
+            self.lukr.open(*device)
+            CloseBox.opened_list.append([device[0], device[1]])
+        except exceptions.WrongPassword:
+            dialog = Gtk.MessageDialog(None,
+                                       0,
+                                       Gtk.MessageType.ERROR,
+                                       Gtk.ButtonsType.OK,
+                                       "Wrong Password")
+            dialog.run()
+            dialog.destroy()
 
 class CloseBox():
     
@@ -146,7 +156,7 @@ class CreateBox():
             dialog = Gtk.MessageDialog(None,
                                        0,
                                        Gtk.MessageType.ERROR,
-                                       Gtk.ButtonsType.CANCEL,
+                                       Gtk.ButtonsType.OK,
                                        "Passwords don't match")
             dialog.run()
             dialog.destroy()
