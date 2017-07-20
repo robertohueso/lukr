@@ -114,6 +114,8 @@ class CreateBox():
         self.create_btn = self.builder.get_object(name)
         name = 'password-create-entry'
         self.password_entry = self.builder.get_object(name)
+        name = 'password-confirm-create-entry'
+        self.password_confirm_entry = self.builder.get_object(name)
         
         #Connect signals
         args = 'clicked', self.handle_save_file
@@ -139,4 +141,15 @@ class CreateBox():
         size = self.size_entry.get_text()
         password = self.password_entry.get_text()
         random = self.random_switch.get_active()
+        #Validation
+        if password != self.password_confirm_entry.get_text():
+            dialog = Gtk.MessageDialog(None,
+                                       0,
+                                       Gtk.MessageType.ERROR,
+                                       Gtk.ButtonsType.CANCEL,
+                                       "Passwords don't match")
+            dialog.run()
+            dialog.destroy()
+            return
+        #Execution
         self.lukr.create(new_file, size, password, random)
