@@ -1,6 +1,7 @@
 import lukr_manager
 import exceptions
 import gi
+import threading
 gi.require_version('Gtk', '3.0')
 
 from gi.repository import Gtk
@@ -126,6 +127,8 @@ class CreateBox():
         self.password_entry = self.builder.get_object(name)
         name = 'password-confirm-create-entry'
         self.password_confirm_entry = self.builder.get_object(name)
+        name = 'create-spinner'
+        self.create_spinner = self.builder.get_object(name)
         
         #Connect signals
         args = 'clicked', self.handle_save_file
@@ -161,5 +164,16 @@ class CreateBox():
             dialog.run()
             dialog.destroy()
             return
+        #Auxiliary function
+        def create_unit(parent, new_file, size, password, random):
+            parent.lukr.create(new_file, size, password, random)
+            parent.create_spinner.stop()
         #Execution
-        self.lukr.create(new_file, size, password, random)
+        self.create_spinner.start()
+        creation_thread = threading.Thread(target=create_unit,
+                                           args=(self,
+                                                 new_file,
+                                                 size,
+                                                 password,
+                                                 random))
+        creation_thread.start()

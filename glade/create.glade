@@ -195,6 +195,17 @@
       </packing>
     </child>
     <child>
+      <object class="GtkSpinner" id="create-spinner">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">5</property>
+      </packing>
+    </child>
+    <child>
       <object class="GtkButton" id="create-button">
         <property name="label" translatable="yes">Create</property>
         <property name="visible">True</property>
@@ -206,7 +217,7 @@
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">6</property>
+        <property name="position">7</property>
       </packing>
     </child>
   </object>
