@@ -129,6 +129,8 @@ class CreateBox():
         self.password_confirm_entry = self.builder.get_object(name)
         name = 'create-spinner'
         self.create_spinner = self.builder.get_object(name)
+        name = 'create-path-entry'
+        self.create_path = self.builder.get_object(name)
         
         #Connect signals
         args = 'clicked', self.handle_save_file
@@ -146,11 +148,11 @@ class CreateBox():
                                         Gtk.ResponseType.OK))
         response = dialog.run()
         if response == Gtk.ResponseType.OK:
-            self.new_file = dialog.get_filename()
+            self.create_path.set_text(dialog.get_filename())
         dialog.destroy()
 
     def handle_create_device(self, widget):
-        new_file = self.new_file
+        new_file = self.create_path.get_text()
         size = self.size_entry.get_text()
         password = self.password_entry.get_text()
         random = self.random_switch.get_active()
