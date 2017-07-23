@@ -28,16 +28,16 @@ class LukrManager():
                              '-y',
                              'luksFormat',
                              path]
-        open_command = ['sudo',
+        open_command = ['pkexec',
                         'cryptsetup',
                         'luksOpen',
                         path,
                         file_name]
-        format_command = ['sudo',
+        format_command = ['pkexec',
                           'mkfs.ext4',
                           '-j',
                           '/dev/mapper/' + file_name]
-        close_command = ['sudo',
+        close_command = ['pkexec',
                          'cryptsetup',
                          'luksClose',
                          file_name]
@@ -78,16 +78,16 @@ class LukrManager():
         #Commands definition
         password = str(password)
         file_name = path.split('/')[-1]
-        open_command = ['sudo',
+        open_command = ['pkexec',
                         'cryptsetup',
                         'luksOpen',
                         path,
                         file_name]
-        mount_command = ['sudo',
+        mount_command = ['pkexec',
                          'mount',
                          '/dev/mapper/' + file_name,
                          mount_dir]
-        chown_command = ['sudo',
+        chown_command = ['pkexec',
                          'chown',
                          '-R',
                          getpass.getuser(),
@@ -117,11 +117,11 @@ class LukrManager():
         
         #Commands definition
         file_name = path.split('/')[-1]
-        close_command = ['sudo',
+        close_command = ['pkexec',
                         'cryptsetup',
                         'luksClose',
                          file_name]
-        umount_command = ['sudo',
+        umount_command = ['pkexec',
                          'umount',
                          mount_dir]
         #Error control
